@@ -85,37 +85,33 @@ Pour lancer Parity, exécutons la commande `parity -c config.toml --unsafe-expos
 Laissez le terminal tel quel puis ouvrez votre navigateur à l'adresse http://**<ip_raspberry>**:8180. Pour trouver l'adresse de votre raspberry, il est indiqué à la fin de la ligne *Public node URL* dans le terminal (192.168.1.xx).
 ![](https://framapic.org/Fmlke1ALWYh3/aN9S5i0XaLRW)  
 
-A partir d'ici il y a deux cas de figures :
+A partir d'ici il y a trois cas de figures :
 - soit une fenêtre présentant Parity s'est affichée, auquel cas vous serez guidé jusqu'à la création de votre premier compte.
 - soit vous êtes sur l'UI sans avoir créé votre premier compte, ce que vous allez faire en allant dans l'onglet 'Accounts' et en cliquant sur "ACCOUNT", "New account".
 - soit une fenêtre vous demandant d'entrer un token s'est affiché. Dans ce dernier cas, vous allez établir une nouvelle connexion SSH sur le raspberry puis `cd DAISEE` et `parity signer new-token -c config.toml`. Cette dernière commande affichant sur la dernière ligne le token que vous allez copier (shift+ctrl+v dans un terminal) puis coller dans le champ demandant le token.
 
-> Pour la création du compte, n'oubliez pas de mettre un mot de passe simple ainsi que de garder la phrase de récupération, elle est demandée par la suite.
+> *Pour la création du compte, n'oubliez pas de mettre un mot de passe simple ainsi que de garder la phrase de récupération, elle est demandée par la suite.*
  
-### Add a node 
-The goal is to connect with another node.
-The blockchain is private/locale, adding a node can be done with the node configuration file.
-Get the address of another node and add it in `config.toml` in **[network]** part:
-```
-bootnodes = ["enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad420f67b9b470d097f1939fa7b9b2aae7d24e72cf7c63fe67217bdf3fd6cb60bbb7ecc59@192.168.0.47:30300"]
-```
-*To get that enode, you can read the line you used to get your raspberry IP in the parity launch, or via the UI, click the network status bar (red) and your enode should be displayed. If no info is displayed, simply refresh (f5)*  
+### Connecter les noeuds 
+
+Le but de cet étape est de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration `config.toml`.  
+Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en ré cupérant la ligne *Public node URL à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
 ![](https://framapic.org/bgZb0PSYhs7m/VkpAgUf4psdO)  
-*in the bottom right*
- 
-Launch the node:
-```bash
-$ --config config.toml --unsafe-expose
+*l'enode est en bas à droite*  
+
+Vous devez donc entrer les enodes des autres participants dans votre fichier `config.toml`. Pour ce faire, ajouter dans la partie **[network]** :
 ```
-A node is connected `1/25 peers`
- 
+pour ajouter 1 noeud :
+bootnodes = ["enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad420f67b9b470d097f1939fa7b9b2aae7d24e72cf7c63fe67217bdf3fd6cb60bbb7ecc59@192.168.0.47:30300"]  
+
+pour ajouter plusieurs noeuds :  
+bootnodes = ["enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad420f67b9b470d097f1939fa7b9b2aae7d24e72cf7c63fe67217bdf3fd6cb60bbb7ecc59@192.168.0.47:30300","enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad420f67b9b470d097f1939fa7b9b2aae7d24e72cf7c63fe67217bdf3fd6cb60bbb7ecc59@192.168.0.47:30300"]
+```
+*remplacer les enodes affichés par ceux des autres participants et n'ajoutez pas les lignes "pour ajouter..."*
+
+Une fois ceci fait, stoppez Parity en tapant ctrl+c dans le terminal où vous l'avez lancé, puis relancez-le `parity -c config.toml --unsafe-expose`.  
+Si les ajouts ont bien été effectués, vous devez voir dans le terminal le nombre de noeuds connectés augmenter, ou dans l'UI les barres de réseau passer au jaune puis au vert. De plus, dans l'onglet réseau, vous aurez le message `Connected Peers (x/25)`
 ![nodeconnected](https://framapic.org/Gp6UgPgiP2sF/P8NyaK6bbTRH)
- 
-We can see the same log in the terminal of the other node.
- 
-Stop the node, use CTRL-C.
- 
-> **Once the nodes are connected, their `demo-spec.json` must always be identical**
  
 ### Add authorities
 In Proof-of-Authority, we have to define authorities which validate transactions between nodes. An authority is an account on a node of the blockchain.
