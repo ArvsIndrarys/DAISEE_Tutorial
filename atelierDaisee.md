@@ -200,34 +200,35 @@ Les autres noeuds vont alors pouvoir utiliser ces informations en cliquant dans 
 Une fois ceci fait, chacun des noeuds doit pouvoir voir les deux contrats dans l'onglet **Contracts**.
 ![](https://framapic.org/HLM8W77L0qGc/gG1ZV3zQrIfQ)
   
-
-Note: the current version of DAISEE smart contract allows to update consumption and production directly. To do this, select the Daisee contract, click the "EXECUTE" button at the top right, and choose the function 'setProduction' or 'consumeEnergy':
+Il est possible actuellement de mettre à jour manuellement la production et la consommation d'énergie. Pour ce faire, cliquez sur le contrat 'Daisee', puis "EXECUTE" en haut à droite, et choisissez la fonction **setProduction()** ou **consumeEnergy()**.
 ![](https://framapic.org/r3IFUYGIKWYQ/pp71NzT78HIl)  
   
 ![](https://framapic.org/M2JzuIOl9qbP/8Na2nbGOd3Ds)
 
-## Interface
+### Echanges d'énergie de pair à pair  
 
-To view data, a Web interface communicates with the local node, through [Web3 JavaScript API](https://github.com/ethereum/wiki/wiki/JavaScript-API), using [web3.js](https://github.com/ethereum/web3.js).  
-The microframework [Flask](http://flask.pocoo.org/) allows to display the interface from the Raspberry Pi node.
-> _Tutorial used_:  
-➡ [A simple smart contract Web UI using web3.js](http://hypernephelist.com/2016/06/21/a-simple-smart-contract-ui-web3.html)  
+Pour montrer les possibilités de l'application DAISEE, nous allons mettre en oeuvre un échange simple d'énergie entre un producteur et un consommateur.  
+Dans l'idée de DAISEE, ces échanges peuvent se faire automatiquement à partir d'un capteur de consommation/production d'énergie.  
 
-Install the requirements
-```bash
-$ sudo aptitude install git
-$ sudo pip3 install flask pyyaml requests
-```
+C'est grâce aux DaiseeCoin que les comptes peuvent acheter de l'énergie. Pour l'instant, seul celui qui a déployé le contrat sur la blockchain en possède.  
+Ce dernier va donc partager ses DaiseeCoin dans le cadre de cet exemple pour que chacun puisse expérimenter. Pour cela, il va cliquer sur le contrat 'DaiseeCoin' puis sur "EXECUTE", choisir la fonction **tranfer()** puis le compte auquel il va transférer les coins et enfin le nombre de coins. Donnez en suffisamment pour vous permettre d'expérimenter comfortablement.  
+![](https://framapic.org/hEnxxGglRRbo/g8v0EeoEXtqh)
+*Dans le cadre d'une utilisation de production, le seul moyen d'obtenir des DaiseeCoin sera soit d'en acheter, soit de vendre de l'énergie via les contrats DAISEE.*
 
-Clone the repository
-```bash
-$ git clone https://github.com/DAISEE/DApp-v2.git
-```
+\[Pour ceux qui veulent acheter de l'énergie (consommateurs\]
+Sélectionnez le contrat DaiseeCoin, cliquez sur "EXECUTE" et choisissez la fonction **approve()**. Dans le choix de l'adresse, sélectionnez Daisee et mettez un nombre de DaiseeCoin arbitraire.
+![](https://framapic.org/EI0aeE27EcYp/Pdxkc9PRY3gs)
+  
+Sélectionnez le contrat Daisee, cliquez sur "EXECUTE" et choisissez la fonction **buyEnergy()**. Suivez les choix à partir de l'image suivante (day1 correspond à un producteur).  
+![](https://framapic.org/H2KXkbDsARVP/ttqM4ZIHONwO)
+*La transaction sera refusée si le montant entré supérieur au montant entré dans **approve()**.*
 
+## DApp
 
-In `DApp-v2/dapp`, create the configuration file (`config.yml`) from the example and complete it:
+Une DApp correspond à une interface Web permettant d'intéragir avec un SmartContract. Le fonctionnement est alors similaire à n'importe quel site actuel permettant d'intéragir avvec une base de données (sous condition que nous avons assez d'Ether pour réaliser nos transactions).  
+La DApp que nous allons présenter permet de suivre en temps réel les transactions Ethereum ainsi que le suivi de l'énergie.
 
-
+Pour ce faire, accédons au dossier DApp-v2/dapp `cd ~/DAISEE/DApp-v2/dapp`, recréons un fichier **config.yml** qui permet d'envoyer les informations au serveur afin de se connecter à la blockchain `nano config.yml` et adaptons le code suivant à nos besoins :   
 ```
 contracts:
   daisee: '0xbeaE6e2747bD6db798d222E2D2185c484b5f2f9d'
@@ -237,7 +238,7 @@ user:
   pwd: '4df74be9792adc7848b15d833748b3affe59fced7e5dd5623831fa3040424761'
   coinbase: '0x005d23c129e6866b89e1c73fc3b05014255cefa2'
   name: 'node1'
-  typ: 'C'
+  type: 'C'
   url: 'http://0.0.0.0'
   sensorId:
   sensorLogin: ''
@@ -249,34 +250,19 @@ user:
 |Type|Field|Description|
 | ------------- | ------------- | ------------- |
 |**contracts**|||
-| |daisee| Daisee.sol address on the blockchain|
-| |token| DaiseeCoin smart-contract address on the blockchain|
+| |daisee| l'adresse de Daisee sur la blockchain|
+| |token| l'adresse de DaiseeCoin sur la blockchain|
 |**user**|||
-| |login | login for UI |
-| |pwd | hashed password for the UI* |
-| |coinbase | user address |
-| |type | type of node ('C' for consumer, 'P' for producer). _Not Used_ |
-| |url | url of energy monitoring application** |
-| |sensorId | url of energy monitoring application |
-| |sensorLogin | login for energy monitoring application |
-| |sensorPassword | password for energy monitoring application |
-| |sensorSource | energy monitoring application  : `'CW'` for citizenWatt (only app supported for now) |
-| |sensorPort | if necessary, port of energy monitoring application, example : `':8080'` |
-> still under development, it may change
+| |login | le nom du compte |
+| |pwd | le hash du mot de passe du compte |
+| |coinbase | l'adresse du compte |
+| |type | type de compte ('C' for consumer, 'P' for producer). inutile ici |
+| |url | 0.0.0.0 |
 
-_\* to obtain the hashed password, use 'raspberry-ip:5000/hash/\<password>' after running the server_  
-_\** if the energy monitoring application is (or will be) on the same Raspberry Pi, follow these [instructions](https://github.com/DAISEE/Prototypes/wiki/3.-Energy-monitoring) before running DAISEE app._  
-_\*** if sensors are not used, sensor parameters can be empty_  
+> pour obtenir le hash du mot de passe, accédez après avoir lancé le serveur à http://**<ip_raspberry>**:5000/hash/<password>  
+> nous laisserons les informations du senseur vides  
 
+Ensuite nous lançons le serveur avec `export FLASK_APP=server.py` puis `python3 -m flask run --host=0.0.0.0`
 
-Run the server
-```bash
-$ export FLASK_APP=server.py
-$ python3 -m flask run --host=0.0.0.0
-```
-
-Go to http://_raspberry-ip_:5000 to access to the interface.
-
+Nous pouvons alors accéder à cette interface sur le navigateur à l'adresse http://**<ip_raspberry>**:5000.  
 ![](https://framapic.org/K9JXZbyw9yR4/QuA3uLk6DDNv)
-> The current version displays Ethereum transactions and realtime data from the energy monitoring application
-
