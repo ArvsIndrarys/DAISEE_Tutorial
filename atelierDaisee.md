@@ -56,7 +56,7 @@ La connexion effectuée, effectuez la commande `cd DAISEE`. Ceci fait, tapez `na
   
 Ensuite, enregistrez le fichier avec ctrl+o puis 'Enter', puis quittez nano avec ctrl+x.  
   
-Editons alors `config.toml` de la même manière en exécutant `nano config.toml` puis en collant le code suivant :  
+Editons alors **config.toml** de la même manière en exécutant `nano config.toml` puis en collant le code suivant :  
 ```
 [parity]
 chain = "demo-spec.json"
@@ -94,12 +94,12 @@ A partir d'ici il y a trois cas de figures :
  
 ### Connecter les noeuds 
 
-Le but de cet étape est de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration `config.toml`.  
+Le but de cet étape est de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration **config.toml**.  
 Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en ré cupérant la ligne *Public node URL* à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
 ![](https://framapic.org/bgZb0PSYhs7m/VkpAgUf4psdO)  
 *l'enode est en bas à droite*  
 
-Vous devez donc entrer les enodes des autres participants dans votre fichier `config.toml`. Pour ce faire, ajouter dans la partie **[network]** :
+Vous devez donc entrer les enodes des autres participants dans votre fichier **config.toml**. Pour ce faire, ajouter dans la partie **[network]** :
 ```
 pour ajouter 1 noeud :
 bootnodes = ["enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad420f67b9b470d097f1939fa7b9b2aae7d24e72cf7c63fe67217bdf3fd6cb60bbb7ecc59@192.168.0.47:30300"]  
@@ -117,7 +117,7 @@ Si les ajouts ont bien été effectués, vous devez voir dans le terminal le nom
 Pour que cette implémentation en Proof Of Authority fonctionne, nous allons définir quels sont les noeuds qui vont valider les transactions.  
 Ces validateurs correspondent à des comptes de la blockchain.  
   
-Une fois que les validateurs ont été choisis, tous les participants vont remplacer dans demo-spec.json les lignes suivantes dans la partie `validators` :
+Une fois que les validateurs ont été choisis, tous les participants vont remplacer dans **demo-spec.json** les lignes suivantes dans la partie `validators` :
 ```
 "list": [
     "0x005d23c129e6866B89E1C73FC3b05014255CEFA2",
@@ -127,7 +127,7 @@ Une fois que les validateurs ont été choisis, tous les participants vont rempl
 *Remplacer les adresses écrites ici par ceux des validateurs désignés. Ces derniers peuvent accéder à l'adresse de leur compte dans l'UI, onglet **Accounts**, noté juste en dessous du nom de leur compte*
 *A la fin de chaque addresse, rajoutez une virgule, sauf pour la dernière, sinon Parity reportera un problème dans le fichier*
 
-De plus pour les validateurs, quelques étapes en plus sont à effectuer. Il faut d'une part rajouter dans le `config.toml` que le compte a été désigné comme validateurs avec les lignes suivantes :
+De plus pour les validateurs, quelques étapes en plus sont à effectuer. Il faut d'une part rajouter dans le **config.toml** que le compte a été désigné comme validateurs avec les lignes suivantes :
 ```
 [account]
 password = ["node.pwds"]
@@ -144,7 +144,7 @@ Et créer le fichier node.pwds ( `nano node.pwds` ) où vous n'écrirez que le m
 Pour effectuer les actions suivantes, les comptes doivent être alimentés en Ether, le "carburant" de la blockchain.
 > \[Ether\] : l'Ether, comme les autres cryptomonnaies, a pour but de permettre le fonctionnement de la blockchain. Sans Ether, une blockchain Ethereum ne peut pas fonctionner, car pour pouvoir effectuer une action au sein de la blockchain, il faut payer le droit de faire cette action en Ether. Ceci permet de responsabiliser les participants et empêche les attaques de type "déni de service".  
 
-Pour ce faire, dans la partie **accounts** du fichier `demo-spec.json`, chaque participant doit rajouter son compte et elui des autres de la manière suivante : 
+Pour ce faire, dans la partie **accounts** du fichier **demo-spec.json**, chaque participant doit rajouter son compte et elui des autres de la manière suivante : 
 ```
 "0x005d23c129e6866B89E1C73FC3b05014255CEFA2": { "balance": "100000000000000000000" }
 ```
