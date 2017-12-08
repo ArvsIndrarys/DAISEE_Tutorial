@@ -144,7 +144,7 @@ Et créer le fichier node.pwds ( `nano node.pwds` ) où vous n'écrirez que le m
 Pour effectuer les actions suivantes, les comptes doivent être alimentés en Ether, le "carburant" de la blockchain.
 > \[Ether\] : l'Ether, comme les autres cryptomonnaies, a pour but de permettre le fonctionnement de la blockchain. Sans Ether, une blockchain Ethereum ne peut pas fonctionner, car pour pouvoir effectuer une action au sein de la blockchain, il faut payer le droit de faire cette action en Ether. Ceci permet de responsabiliser les participants et empêche les attaques de type "déni de service".  
 
-Pour ce faire, dans la partie **accounts** du fichier **demo-spec.json**, chaque participant doit rajouter son compte et elui des autres de la manière suivante : 
+Pour ce faire, dans la partie **accounts** du fichier **demo-spec.json**, chaque participant doit rajouter son compte et celui des autres de la manière suivante : 
 ```
 "0x005d23c129e6866B89E1C73FC3b05014255CEFA2": { "balance": "100000000000000000000" }
 ```
@@ -158,59 +158,53 @@ Si c'est le cas, ajoutez dans votre carnet d'adresses les comptes des autres par
  
 ## Smart-contracts
 
-2 smart-contracts (in [Solidity](http://solidity.readthedocs.io/en/develop/introduction-to-smart-contracts.html)) are used:
-* [token.sol](https://github.com/DAISEE/DApp-v2/blob/master/smartcontracts/token.sol)  
-This is the smart-contract described in the tutorial "**[Create your own crypto-currency](https://www.ethereum.org/token)**".  
-It allows to create a token, according to the [ERC20 Token Standard](https://github.com/ethereum/EIPs/issues/20).
-* [daisee.sol](https://github.com/DAISEE/DApp-v2/blob/master/smartcontracts/daisee.sol)  
-The current version allows to :
-    * store energy data on blockchain (consumption and production),
-    * make transactions between peers.  
-For now, the rules that trigger transactions are not implemented in a smart contract.
-Note: the smart contract is still under development, the code may change (see [Issues](https://github.com/DAISEE/DApp-v2/issues)).  
+Pour l'application de DAISEE que nous allons mettre en oeuvre, nous aurons besoin d'un fichier présent dans le dossier `/home/pi/DAISEE`, nommé **daisee.sol**.   
+Ce dernier est composée de deux parties, la première permettant de créer un token, le DaiseeCoin, qui permettra de financer les transactions, et la deuxième partie correspond à l'échange d'énergie entre les pairs et le stockage de données dans la blockchain.  
 
-Several methods exist for deploying and testing a smart contract.  
-In this wiki, the use of the Parity UI is described.  
 
-### Deploying contracts 
-In **Contracts** Tab, after clicking on "DEVELOP" button, copy paste the code from token.sol then, at the end of this code, copy/paste the code of daisee.sol:
+### Déploiement des contrats  
+
+Un seul des participants va déployer ces contrats car de par le fonctionnement de la blockchain, ils seront décentralisés et tous pourront y accéder.
+
+Allez dans l'onglet **Contracts**, cliquez sur "DEVELOP" et collez le code de **token.sol**.
 ![](https://framapic.org/bd3PlL7voo1h/Y0rstT9XQlNr)  
   
-Then, in the 'select a Solidity version', choose the version 0.4.2 and click "COMPILE". That done, select the contract MyAdvancedToken in the 'select a contract' field and click "DEPLOY":    
+Selectionnez dans 'Select a Solidity version' la version 0.4.2 et cliquez sur "COMPILE". Choisissez ensuite dans 'Select a contract' le contrat MyAdvancedToken et cliquez sur "DEPLOY".
 ![](https://framapic.org/j2Q5T3lleA8c/6UVWBTQgAE8v)  
   
-Enter the name of the contract as shown, then the details on the next page and finally confirm the contract creation with your user's password:
+Entrez les infos du contrat tels que présentés aux images suivantes puis confirmez avec le mot de passe du compte qui déploie le contrat.
 ![](https://framapic.org/xL3WJP6DyOC3/fmSPKmy0NYAX)  
   
 ![](https://framapic.org/3EFEwAHH5LLm/GNCVekcH76oc)  
   
 ![](https://framapic.org/sBVW01VIdool/tvvgpXF9qD1T)  
   
-We successfully deployed the DaiseeCoin contract. Now, to deploy the Daisee contract, go back to the **Contracts** tab, "DEVELOP" then select Daisee under the 'select a contract' field:  
+Ensuite selectionnez le contrat Daisee dans 'Select a contract' et cliquez de nouveau sur "DEPLOY"
 ![](https://framapic.org/wNAfTD8HJQgU/ux4Q4HRwCMsL)  
 
-Simply name it Daisee and confirm the transaction. The two smart-contract now appear in the **Contracts** tab:
+Appelez le simplement Daisee et confirmez la transaction. Les deux smart-contracts apparaissent maintenant dans l'onglet **Contracts**.
 ![](https://framapic.org/3kiQhcuf7ECw/zkhGxv6s8Xqt)  
 
-At this point normally, only one node has these two contracts. For letting all nodes use that contract, they have to "WATCH" it. To do that, copy the contract's address (0x----------------) on the node that has it, then transmit it to the others:  
+### Partage des contrats  
+
+Pour que tous les noeuds puissent utiliser ces contrats, ils doivent l'ajouter. Pour ce faire, nous allons récupérer deux infos sur chacun des contrats. La première correspond à l'adresse (0x-------------).
 ![](https://framapic.org/g85tjH3yB6Wq/bUWJaJJD66Uy)  
 
-The ABI has to be transmitted to for each contract too. To view it, select the contract, click 'Details' in the top-right, and go down until the ABI:  
+La deuxième correspond à l'ABI, que l'on peut trouver en cliquant sur le contrat puis sur "DETAILS" en haut à droite, et il sera affiché tout en bas.
 ![](https://framapic.org/ggeEzw2RetGL/ettadL1qIifq)
-*To copy the contract, click inside the ABI code then use : ctrl+a to select all the code, then ctrl+c to copy it*  
+*Pour le copier facilement, cliquer sur son code puis ctrl+a (sélectionner tout le code) puis ctrl+c (copier)*  
 
-Then, all the nodes that are on the same network can use that contract by going to the **Contracts** tab, select "WATCH" on the top-right, select 'Custom contract', then pasting the right data in the right field :  
+Les autres noeuds vont alors pouvoir utiliser ces informations en cliquant dans **Contracts** puis "WATCH", 'Token' pour DaiseeCoin et 'Custom Contract' pour Daisee, et en collant les informations dans le bon champ.
 ![](https://framapic.org/2ZqtxW66tU0J/gLyV9E25nlKA)  
 
-That done for the two contracts, the other node should see in the **Contracts** tab the contracts with the same address as well :  
+Une fois ceci fait, chacun des noeuds doit pouvoir voir les deux contrats dans l'onglet **Contracts**.
 ![](https://framapic.org/HLM8W77L0qGc/gG1ZV3zQrIfQ)
   
+
 Note: the current version of DAISEE smart contract allows to update consumption and production directly. To do this, select the Daisee contract, click the "EXECUTE" button at the top right, and choose the function 'setProduction' or 'consumeEnergy':
 ![](https://framapic.org/r3IFUYGIKWYQ/pp71NzT78HIl)  
   
 ![](https://framapic.org/M2JzuIOl9qbP/8Na2nbGOd3Ds)
-
-> see Issue [DApp-v2/issues/5](https://github.com/DAISEE/DApp-v2/issues/5)  
 
 ## Interface
 
