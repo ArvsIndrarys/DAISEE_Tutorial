@@ -95,7 +95,7 @@ A partir d'ici il y a trois cas de figures :
 ### Connecter les noeuds 
 
 Le but de cet étape est de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration `config.toml`.  
-Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en ré cupérant la ligne *Public node URL à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
+Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en ré cupérant la ligne *Public node URL* à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
 ![](https://framapic.org/bgZb0PSYhs7m/VkpAgUf4psdO)  
 *l'enode est en bas à droite*  
 
@@ -113,17 +113,21 @@ Une fois ceci fait, stoppez Parity en tapant ctrl+c dans le terminal où vous l'
 Si les ajouts ont bien été effectués, vous devez voir dans le terminal le nombre de noeuds connectés augmenter, ou dans l'UI les barres de réseau passer au jaune puis au vert. De plus, dans l'onglet réseau, vous aurez le message `Connected Peers (x/25)`
 ![nodeconnected](https://framapic.org/Gp6UgPgiP2sF/P8NyaK6bbTRH)
  
-### Add authorities
-In Proof-of-Authority, we have to define authorities which validate transactions between nodes. An authority is an account on a node of the blockchain.
- 
-Add one or more account addresses in `demo-spec.json` in `"validators"` part:
+### Ajout des validateurs  
+Pour que cette implémentation en Proof Of Authority fonctionne, nous allons définir quels sont les noeuds qui vont valider les transactions.  
+Ces validateurs correspondent à des comptes de la blockchain.  
+  
+Une fois que les validateurs ont été choisis, tous les participants vont remplacer dans demo-spec.json les lignes suivantes dans la partie `validators` :
 ```
 "list": [
     "0x005d23c129e6866B89E1C73FC3b05014255CEFA2",
     "0x0011067b3a4fE6fd301296AD5bC730F7a1CeCE4f"
 ]
 ```
-And for each node of each authority account, following parameters have to be add in `config.toml`:
+*Remplacer les adresses écrites ici par ceux des validateurs désignés. Ces derniers peuvent accéder à l'adresse de leur compte dans l'UI, onglet **Accounts**, noté juste en dessous du nom de leur compte*
+*A la fin de chaque addresse, rajoutez une virgule, sauf pour la dernière, sinon Parity reportera un problème dans le fichier*
+
+De plus pour les validateurs, quelques étapes en plus sont à effectuer. Il faut d'une part rajouter dans le `config.toml` que le compte a été désigné comme validateurs avec les lignes suivantes :
 ```
 [account]
 password = ["node.pwds"]
@@ -131,41 +135,27 @@ password = ["node.pwds"]
 engine_signer = "0x002e28950558fbede1a9675cb113f0bd20912019"
 reseal_on_txs = "none"
 ```
-> engine_signer is the account address used for authorities.
+*remplacer l'adresse écrite par celle de votre compte*  
+
+Et créer le fichier node.pwds ( `nano node.pwds` ) où vous n'écrirez que le mot de passe du compte.
  
-Create an empty file `node.pwds` and write to it the account password.
- 
-### Deposit Ether on the account
-Each account needs Ether to deploy a smart-contract or to execute a transaction.
- 
-Add the account address in `demo-spec.json` in `"accounts"` part like this:
+### Alimenter les comptes en Ether fictifs  
+
+Pour effectuer les actions suivantes, les comptes doivent être alimentés en Ether, le "carburant" de la blockchain.
+> \[Ether\] : l'Ether, comme les autres cryptomonnaies, a pour but de permettre le fonctionnement de la blockchain. Sans Ether, une blockchain Ethereum ne peut pas fonctionner, car pour pouvoir effectuer une action au sein de la blockchain, il faut payer le droit de faire cette action en Ether. Ceci permet de responsabiliser les participants et empêche les attaques de type "déni de service".  
+
+Pour ce faire, dans la partie **accounts** du fichier `demo-spec.json`, chaque participant doit rajouter son compte et elui des autres de la manière suivante : 
 ```
 "0x005d23c129e6866B89E1C73FC3b05014255CEFA2": { "balance": "100000000000000000000" }
 ```
- 
-Start the node:
-```bash
-$ parity --config config.toml --unsafe-expose
-```
- 
-Go to http://_raspberry-ip_:8180 and check if the account has been credited.  
+*à la fin de chaque ligne sauf la dernière, une virgule devra être rajoutée, sans quoi parity indiquera une erreur dans le fichier*  
 
-If it is the case, you can add to your addressbook the accounts of the other nodes. To do it, go to the **Addressbook** tab and click 'Address' and paste the address of the other account you want to add, and his name.  
+Ces modifications ajoutées, nous pouvons relancer Parity `parity -c config.toml --unsafe-expose` et dans l'UI sous l'onglet **Accounts**, nous observerons que le compte est alimenté en Ether.
+ 
+Si c'est le cas, ajoutez dans votre carnet d'adresses les comptes des autres participants : allez dans l'onglet **Addressbook**, cliquez sur 'Address' et coller l'adresse ainsi que le nom du compte que vous voulez ajouter.  
 ![](https://framapic.org/UYgClcmnF97S/bungWbnezu8i) 
-*The address of an account is displayed under that account's name in the **Accounts** tab*
+*L'adresse d'un compte est affichée sous son nom dans l'onglet **Accounts** .*
  
-### Troubleshooting
-In the case where a new validator node is added, after some blocks validation, the following message may appear during blocks import:
-```
-Error: Engine(NotProposer(Mismatch { expected: 00aa39d30f0d20ff03a22ccfc30b7efbfca597c2, found: 00bd138abd70e2f00903268f3db08f2d25677c9e }))
-```
-The workaround is to modify the chain specifications to revert to the precedent version, until a new error message.  
-_Exemple:_ 
-![parity client](https://framapic.org/6zUOp85sYvb6/6Jb25HwONahj.png)
-_Only 3 blocks are imported with the last version of chain-specs.json (3 validators). In order to import the next blocks, the last validator is removed from chain specs, and blocks are imported until block #55. After this message, using the last version of chain specs (with the 3 validators) allows to import the full blockchain.  
-The best solution  would be to add the new validator account only after importing the full blockchain on the node._  
- 
-
 ## Smart-contracts
 
 2 smart-contracts (in [Solidity](http://solidity.readthedocs.io/en/develop/introduction-to-smart-contracts.html)) are used:
