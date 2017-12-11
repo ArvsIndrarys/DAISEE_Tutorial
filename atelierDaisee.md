@@ -102,7 +102,7 @@ Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on ob
 
 #### Partage des informations
 [  
-Afin de vous permettre de vous partager les informations facilement, un partage a été mis en place, qui se trouve dans le dossier `/home/pi/NFS`. Pour y accéder, établissez une nouvelle connexion SSH grâce à Putty sur le raspberry puis tapez `cd NFS` puis `mf`. A partir de là, entrez les informations de votre noeud dans le fichier correspondant, ou récupérez les informations des autres noeuds en utilisant `cat <nom_fichier>`.
+Afin de vous permettre de vous partager les informations facilement, un partage a été mis en place, qui se trouve dans le dossier `/home/pi/NFS`. Pour y accéder, établissez une nouvelle connexion SSH grâce à Putty sur le raspberry puis tapez `cd NFS` puis `mf`. A partir de là, entrez les informations de votre noeud (pour l'instant uniquement l'enode) dans le fichier correspondant, ou récupérez les informations des autres noeuds en utilisant `cat <nom_fichier>`.
 > *vous aurez besoin des deux terminaux jusqu'à la fin du tutoriel*  
 >*le nom de votre noeud est écrit au début de chaque ligne de votre ligne de commande : à **pi@<nom_noeud>** (raspX)*  
   
