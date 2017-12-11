@@ -186,20 +186,18 @@ Allez dans l'onglet **Contracts**, cliquez sur "DEVELOP" et collez le code de **
 ![](https://framapic.org/bd3PlL7voo1h/Y0rstT9XQlNr)  
 
 A partir de ce moment, Parity vous propose les outils permettant de développer vous même votre SmartContract, mais a besoin pour cela d'une connexion internet afin de tléécharger le version du compilateur voulue.  
-N(ayant pas ce luxe, nous avons précompilé le contrat pour pouvoir le déployer. Vous le trouverez dans `/home/pi/NFS/coin`.  
+N'ayant pas ce luxe, nous avons précompilé le contrat pour pouvoir le déployer. Vous le trouverez dans `/home/pi/NFS/coin`.  
 Pour le déployer, allez dans l'onglet **Contracts**, puis "DEPLOY", 
 
-Entrez les infos du contrat tels que présentées aux images suivantes puis confirmez avec le mot de passe du compte qui déploie le contrat.
+Entrez les infos du contrat tels que présentées aux images suivantes, en entrant l'ABI et le Bytecode affichés dans le fichier `coin` puis confirmez avec le mot de passe du compte qui déploie le contrat.
 ![](https://framapic.org/xL3WJP6DyOC3/fmSPKmy0NYAX)  
 
 ![](https://framapic.org/3EFEwAHH5LLm/GNCVekcH76oc)  
 
 ![](https://framapic.org/sBVW01VIdool/tvvgpXF9qD1T)  
 
-Ensuite selectionnez le contrat Daisee dans 'Select a contract' et cliquez de nouveau sur "DEPLOY"
-![](https://framapic.org/wNAfTD8HJQgU/ux4Q4HRwCMsL)  
 
-Appelez le simplement Daisee et confirmez la transaction. Les deux smart-contracts apparaissent maintenant dans l'onglet **Contracts**.
+Faites ainsi un autre "DEPLOY" en y entrant les infos présentes dans Daisee et appelez le simplement Daisee. Confirmez la transaction et les deux smart-contracts apparaissent maintenant dans l'onglet **Contracts**.
 ![](https://framapic.org/3kiQhcuf7ECw/zkhGxv6s8Xqt)  
 
 ### Partage des contrats  
