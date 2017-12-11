@@ -104,7 +104,8 @@ Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on ob
 [  
 Afin de vous permettre de vous partager les informations facilement, un partage a été mis en place, qui se trouve dans le dossier `/home/pi/NFS`. Pour y accéder, établissez une nouvelle connexion SSH grâce à Putty sur le raspberry puis tapez `cd NFS` puis `mf`. A partir de là, entrez les informations de votre noeud dans le fichier correspondant, ou récupérez les informations des autres noeuds en utilisant `cat <nom_fichier>`.
 > *vous aurez besoin des deux terminaux jusqu'à la fin du tutoriel*  
->*le nom de votre noeud est écrit au début de chaque ligne de votre ligne de commande : à **pi@<nom_noeud>** (raspX)*
+>*le nom de votre noeud est écrit au début de chaque ligne de votre ligne de commande : à **pi@<nom_noeud>** (raspX)*  
+]
 
 Vous devez donc entrer les enodes des autres participants dans votre fichier **config.toml**. Pour ce faire, ajouter dans la partie **[network]** :
 ```
@@ -116,7 +117,6 @@ bootnodes = ["enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad4
 ```
 >*remplacer les enodes affichés par ceux des autres participants et n'ajoutez pas les lignes "pour ajouter..."*  
 >*pour vous simplifier la tâche, vous pouvez ouvrir une troisième fenêtre de terminal.*  
-]
 Une fois ceci fait, stoppez Parity en tapant ctrl+c dans le terminal où vous l'avez lancé, puis relancez-le `parity -c config.toml --unsafe-expose`.  
 Si les ajouts ont bien été effectués, vous devez voir dans le terminal le nombre de noeuds connectés augmenter, ou dans l'UI les barres de réseau passer au jaune puis au vert. De plus, dans l'onglet réseau, vous aurez le message `Connected Peers (x/25)`
 ![nodeconnected](https://framapic.org/Gp6UgPgiP2sF/P8NyaK6bbTRH)
