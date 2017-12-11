@@ -95,7 +95,7 @@ A partir d'ici il y a trois cas de figures :
 ### Connecter les noeuds
 
 Le but de cet étape est de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration **config.toml**.  
-Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en ré cupérant la ligne *Public node URL* à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
+Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en récupérant la ligne *Public node URL* à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
 ![](https://framapic.org/bgZb0PSYhs7m/VkpAgUf4psdO)  
 *l'enode est en bas à droite*  
 
