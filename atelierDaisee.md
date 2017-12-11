@@ -52,7 +52,7 @@ La connexion effectuée, effectuez la commande `cd DAISEE`. Ceci fait, tapez `na
     }
 }
 ```
-*Pour coller du texte dans un terminal, tapez shift+ctrl+v au lieu de ctrl+v*  
+*Pour coller du texte dans un terminal, utilisez le clic droit souris*  
 
 Ensuite, enregistrez le fichier avec ctrl+o puis 'Enter', puis quittez nano avec ctrl+x.  
 
@@ -97,7 +97,14 @@ A partir d'ici il y a trois cas de figures :
 Le but de cet étape est de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration **config.toml**.  
 Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en récupérant la ligne *Public node URL* à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
 ![](https://framapic.org/bgZb0PSYhs7m/VkpAgUf4psdO)  
-*l'enode est en bas à droite*  
+>*l'enode est en bas à droite*  
+>*l'enode correspond à l'adresse du noeud par rapport au réseau. Il est unique et permet aux autres noeuds de l'identifier.*
+
+#### Partage des informations
+
+Afin de vous permettre de vous partager les informations facilement, un partage a été mis en place, qui se trouve dans le dossier `/home/pi/NFS`. Pour y accéder, établissez une nouvelle connexion SSH grâce à Putty sur le raspberry puis tpaez `cd NFS`. A partir de là, entrez les informations de votre noeud dans le fichier correspondant, ou récupérez les informations des autres noeuds en utilisant `cat <nom_fichier>`.
+> *vous aurez besoin des deux terminaux jusqu'à la fin du tutoriel*  
+>*le nom de votre noeud est écrit au début de chaque ligne de votre ligne de commande : à **pi@<nom_noeud>** (raspX)*
 
 Vous devez donc entrer les enodes des autres participants dans votre fichier **config.toml**. Pour ce faire, ajouter dans la partie **[network]** :
 ```
@@ -107,7 +114,8 @@ bootnodes = ["enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad4
 pour ajouter plusieurs noeuds :  
 bootnodes = ["enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad420f67b9b470d097f1939fa7b9b2aae7d24e72cf7c63fe67217bdf3fd6cb60bbb7ecc59@192.168.0.47:30300","enode://ff14ae0a273e08ffbbe20b4b398460eb471e23f1b4301ce46b92a86ad420f67b9b470d097f1939fa7b9b2aae7d24e72cf7c63fe67217bdf3fd6cb60bbb7ecc59@192.168.0.47:30300"]
 ```
-*remplacer les enodes affichés par ceux des autres participants et n'ajoutez pas les lignes "pour ajouter..."*
+>*remplacer les enodes affichés par ceux des autres participants et n'ajoutez pas les lignes "pour ajouter..."*  
+>*pour vous simplifier la tâche, vous pouvez ouvrir une troisième fenêtre de terminal.*
 
 Une fois ceci fait, stoppez Parity en tapant ctrl+c dans le terminal où vous l'avez lancé, puis relancez-le `parity -c config.toml --unsafe-expose`.  
 Si les ajouts ont bien été effectués, vous devez voir dans le terminal le nombre de noeuds connectés augmenter, ou dans l'UI les barres de réseau passer au jaune puis au vert. De plus, dans l'onglet réseau, vous aurez le message `Connected Peers (x/25)`
