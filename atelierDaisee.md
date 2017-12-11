@@ -6,8 +6,11 @@ Pour des raisons de test ainsi que de ressources, le consensus utilisé au sein 
 > \[Proof-of-Authority\]  : Contrairement au minage du Bitcoin qui consomme énormément de ressources en faisant résoudre par les noeuds des problèmes mathématiques ayant une difficulté arbitraire, PoA (Proof Of Authority) sélectionne parmi les noeuds participants des validateurs. Ces derniers se mettront d'accord pour accepter les transactions, empêcher les fraudes et sécuriser la blockchain. Pour une chaine privée dont on est sûr de la confiance que l'on peut apporter à ces noeuds, ce mécanisme est le plus simple à utiliser et à vérifier.  
 
 La configuration de Parity est très simple car elle ne nécessite que deux fichers de configuration :   
-- L'un pour configurer le comportement local du noeud, nommé **config.toml**  
+- L'un pour configurer le comportement local du noeud, nommé **config.toml**
+> On y écrit donc que port ce noeud va ouvrir, quels types d'appel, comment signer les transactions si on est validateurs, ...  
+ 
 - L'autre pour configurer la chaine à laquelle le noeud se connecte, nommé **demo-spec.json**  
+> On y écrit donc comment les transactions vont être validées, quel type de consensus, et les propriétés des blocs.
 
 > **Le fichier json configurant la chaine, tous les noeuds devront avoir à chaque instant exactement le même pour fonctionner et intéragir correctement.**  
 
@@ -94,7 +97,8 @@ A partir d'ici il y a trois cas de figures :
 
 ### Connecter les noeuds
 
-Le but de cet étape est de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration **config.toml**.  
+Jusque là, vos noeuds créent leur propre chaîne et rien ne leur indique qu'ils doivent la synchroniser avec d'autres noeuds.  
+Le but de cet étape est alors de connecter les noeuds ensemble. Pour ce faire, nous allons éditer le fichier de configuration **config.toml**.  
 Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on obtient soit en récupérant la ligne *Public node URL* à partir de 'enode' jusqu'à '30303' compris dans le terminal, à l'endroit qui vous a permis de récupérer l'adresse IP du raspberry, soit dans l'UI en allant sur l'onglet représenté par les barres de réseau dans le champ enode (il y aura peut être besoin de rafraîchir la page pour qu'elle s'affiche correctement avec la touche f5).
 ![](https://framapic.org/bgZb0PSYhs7m/VkpAgUf4psdO)  
 >*l'enode est en bas à droite*  
@@ -102,7 +106,9 @@ Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on ob
 
 #### Partage des informations
 [  
-Afin de vous permettre de vous partager les informations facilement, un partage a été mis en place, qui se trouve dans le dossier `/home/pi/NFS`. Pour y accéder, établissez une nouvelle connexion SSH grâce à Putty sur le raspberry puis tapez `cd NFS` puis `mf`. A partir de là, entrez les informations de votre noeud (pour l'instant uniquement l'enode) dans le fichier correspondant, ou récupérez les informations des autres noeuds en utilisant `cat <nom_fichier>`.
+Afin de vous permettre de vous partager les informations facilement, un partage a été mis en place, qui se trouve dans le dossier `/home/pi/NFS`. Pour y accéder, établissez une nouvelle connexion SSH grâce à Putty sur le raspberry puis tapez `mf` puis `cd NFS`.   
+En tapant `ls`, vous constaterez que des fichiers correspondant à votre noeud y apparaissent, en plus de deux autres, dont nous allons parler plus tard. 
+Entrez alors l'enode de votre noeud dans le fichier correspondant (`nano <nom_noeud>`), puis récupérez les informations des autres noeuds en utilisant `cat <nom_fichier>`.
 > *vous aurez besoin des deux terminaux jusqu'à la fin du tutoriel*  
 >*le nom de votre noeud est écrit au début de chaque ligne de votre ligne de commande : à **pi@<nom_noeud>** (raspX)*  
   
@@ -157,7 +163,8 @@ Pour ce faire, dans la partie **accounts** du fichier **demo-spec.json**, chaque
 ```
 "0x005d23c129e6866B89E1C73FC3b05014255CEFA2": { "balance": "100000000000000000000" }
 ```
-*à la fin de chaque ligne sauf la dernière, une virgule devra être rajoutée, sans quoi parity indiquera une erreur dans le fichier*  
+>*Gardez les adresses déjà inscrites car elles sont nécessaires au fonctionnement des Smart Contracts (plus tard dans ce tutoriel)*  
+>*à la fin de chaque ligne sauf la dernière, une virgule devra être rajoutée, sans quoi parity indiquera une erreur dans le fichier*  
 
 Ces modifications ajoutées, nous pouvons relancer Parity `parity -c config.toml --unsafe-expose` et dans l'UI sous l'onglet **Accounts**, nous observerons que le compte est alimenté en Ether.
 
@@ -175,11 +182,12 @@ Ce dernier est composée de deux parties, la première permettant de créer un t
 
 Un seul des participants va déployer ces contrats car de par le fonctionnement de la blockchain, ils seront décentralisés et tous pourront y accéder.
 
-Allez dans l'onglet **Contracts**, cliquez sur "DEVELOP" et collez le code de **token.sol**.
+Allez dans l'onglet **Contracts**, cliquez sur "DEVELOP" et collez le code de **daisee.sol**.
 ![](https://framapic.org/bd3PlL7voo1h/Y0rstT9XQlNr)  
 
-Selectionnez dans 'Select a Solidity version' la version 0.4.2 et cliquez sur "COMPILE". Choisissez ensuite dans 'Select a contract' le contrat MyAdvancedToken et cliquez sur "DEPLOY".
-![](https://framapic.org/j2Q5T3lleA8c/6UVWBTQgAE8v)  
+A partir de ce moment, Parity vous propose les outils permettant de développer vous même votre SmartContract, mais a besoin pour cela d'une connexion internet afin de tléécharger le version du compilateur voulue.  
+N(ayant pas ce luxe, nous avons précompilé le contrat pour pouvoir le déployer. Vous le trouverez dans `/home/pi/NFS/coin`.  
+Pour le déployer, allez dans l'onglet **Contracts**, puis "DEPLOY", 
 
 Entrez les infos du contrat tels que présentées aux images suivantes puis confirmez avec le mot de passe du compte qui déploie le contrat.
 ![](https://framapic.org/xL3WJP6DyOC3/fmSPKmy0NYAX)  
