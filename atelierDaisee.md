@@ -124,7 +124,7 @@ Une fois que les validateurs ont été choisis, tous les participants vont rempl
     "0x0011067b3a4fE6fd301296AD5bC730F7a1CeCE4f"
 ]
 ```
-*Remplacer les adresses écrites ici par ceux des validateurs désignés. Ces derniers peuvent accéder à l'adresse de leur compte dans l'UI, onglet **Accounts**, noté juste en dessous du nom de leur compte*
+*Remplacer les adresses écrites ici par ceux des validateurs désignés. Ces derniers peuvent accéder à l'adresse de leur compte dans l'UI, onglet **Accounts**, noté juste en dessous du nom de leur compte*  
 *A la fin de chaque addresse, rajoutez une virgule, sauf pour la dernière, sinon Parity reportera un problème dans le fichier*
 
 De plus pour les validateurs, quelques étapes en plus sont à effectuer. Il faut d'une part rajouter dans le **config.toml** que le compte a été désigné comme validateurs avec les lignes suivantes :
@@ -152,7 +152,7 @@ Pour ce faire, dans la partie **accounts** du fichier **demo-spec.json**, chaque
 
 Ces modifications ajoutées, nous pouvons relancer Parity `parity -c config.toml --unsafe-expose` et dans l'UI sous l'onglet **Accounts**, nous observerons que le compte est alimenté en Ether.
 
-Si c'est le cas, ajoutez dans votre carnet d'adresses les comptes des autres participants : allez dans l'onglet **Addressbook**, cliquez sur 'Address' et coller l'adresse ainsi que le nom du compte que vous voulez ajouter.  
+Si c'est le cas, ajoutez dans votre carnet d'adresses les comptes des autres participants : allez dans l'onglet **Addressbook**, cliquez sur "Address" et coller l'adresse ainsi que le nom du compte que vous voulez ajouter.  
 ![](https://framapic.org/UYgClcmnF97S/bungWbnezu8i)
 *L'adresse d'un compte est affichée sous son nom dans l'onglet **Accounts** .*
 
