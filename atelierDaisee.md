@@ -235,7 +235,7 @@ user:
   pwd: '4df74be9792adc7848b15d833748b3affe59fced7e5dd5623831fa3040424761'
   coinbase: '0x005d23c129e6866b89e1c73fc3b05014255cefa2'
   name: 'node1'
-  type: 'C'
+  typ: 'C'
   url: 'http://<ip_raspberry>'
   sensorId:
   sensorLogin: ''
@@ -253,7 +253,7 @@ user:
 | |login | le nom du compte |
 | |pwd | le hash du mot de passe du compte |
 | |coinbase | l'adresse du compte |
-| |type | type de compte ('C' for consumer, 'P' for producer). inutile ici |
+| |typ | type de compte ('C' for consumer, 'P' for producer). inutile ici |
 | |url | http://<ip_raspberry> |
 
 > pour obtenir le hash du mot de passe, accédez après avoir lancé le serveur à http://**<ip_raspberry>**:5000/hash/<password>  
