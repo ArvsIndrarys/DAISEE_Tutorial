@@ -8,7 +8,7 @@ Pour des raisons de test ainsi que de ressources, le consensus utilisé au sein 
 La configuration de Parity est très simple car elle ne nécessite que deux fichers de configuration :   
 - L'un pour configurer le comportement local du noeud, nommé **config.toml**
 > On y écrit donc que port ce noeud va ouvrir, quels types d'appel, comment signer les transactions si on est validateurs, ...  
- 
+
 - L'autre pour configurer la chaine à laquelle le noeud se connecte, nommé **demo-spec.json**  
 > On y écrit donc comment les transactions vont être validées, quel type de consensus, et les propriétés des blocs.
 
@@ -67,7 +67,7 @@ base_path = "/home/pi/DAISEE/parity"
 [network]
 port = 30300
 [rpc]
-port = 8540
+port = 8545
 apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc", "parity_accounts"]
 [ui]
 port = 8180
@@ -107,7 +107,7 @@ Mais auparavant, il s'agit de récupérer l'enode de votre noeud, ce que l'on ob
 #### Partage des informations
 [  
 Afin de vous permettre de vous partager les informations facilement, un partage a été mis en place, qui se trouve dans le dossier `/home/pi/NFS`. Pour y accéder, établissez une nouvelle connexion SSH grâce à Putty sur le raspberry puis tapez `mf` puis `cd NFS`.   
-En tapant `ls`, vous constaterez que des fichiers correspondant à votre noeud y apparaissent, en plus de deux autres, dont nous allons parler plus tard. 
+En tapant `ls`, vous constaterez que des fichiers correspondant à votre noeud y apparaissent, en plus de deux autres, dont nous allons parler plus tard.
 Entrez alors l'enode de votre noeud dans le fichier correspondant (`nano <nom_noeud>`), puis récupérez les informations des autres noeuds en utilisant `cat <nom_fichier>`.
 > *vous aurez besoin des deux terminaux jusqu'à la fin du tutoriel*  
 >*le nom de votre noeud est écrit au début de chaque ligne de votre ligne de commande : à **pi@<nom_noeud>** (raspX)*  
@@ -187,7 +187,7 @@ Allez dans l'onglet **Contracts**, cliquez sur "DEVELOP" et collez le code de **
 
 A partir de ce moment, Parity vous propose les outils permettant de développer vous même votre SmartContract, mais a besoin pour cela d'une connexion internet afin de tléécharger le version du compilateur voulue.  
 N'ayant pas ce luxe, nous avons précompilé le contrat pour pouvoir le déployer. Vous le trouverez dans `/home/pi/NFS/coin`.  
-Pour le déployer, allez dans l'onglet **Contracts**, puis "DEPLOY", 
+Pour le déployer, allez dans l'onglet **Contracts**, puis "DEPLOY",
 
 Entrez les infos du contrat tels que présentées aux images suivantes, en entrant l'ABI et le Bytecode affichés dans le fichier `coin` puis confirmez avec le mot de passe du compte qui déploie le contrat.
 ![](https://framapic.org/xL3WJP6DyOC3/fmSPKmy0NYAX)  
